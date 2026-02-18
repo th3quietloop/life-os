@@ -1,26 +1,65 @@
 {
   "name": "life-os",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "main": "main/main.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently --kill-others \"next dev\" \"npm run electron:dev\"",
+    "electron:dev": "node scripts/wait-for-next.mjs && electron .",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "start": "electron .",
+    "lint": "eslint",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "pack": "npm run build && electron-builder --mac"
   },
   "dependencies": {
+    "@tiptap/extension-placeholder": "^3.20.0",
+    "@tiptap/react": "^3.20.0",
+    "@tiptap/starter-kit": "^3.20.0",
+    "better-sqlite3": "^12.6.2",
+    "canvas-confetti": "^1.9.4",
+    "concurrently": "^9.2.1",
+    "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.45.1",
+    "electron-serve": "^3.0.1",
+    "framer-motion": "^12.34.2",
+    "lucide-react": "^0.574.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/uuid": "^10.0.0",
+    "drizzle-kit": "^0.31.9",
+    "electron": "^40.4.1",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "build": {
+    "appId": "com.russell.life-os",
+    "productName": "Life OS",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main/**/*.js",
+      "out/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    }
   }
 }
